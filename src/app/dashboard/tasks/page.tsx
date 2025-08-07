@@ -1,0 +1,226 @@
+
+'use client'
+
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { PlusCircle, MoreHorizontal } from "lucide-react";
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Progress } from '@/components/ui/progress';
+
+const taskStatuses = ["To Do", "In Progress", "In Review", "Done"];
+const priorities = ["High", "Medium", "Low"];
+
+const getPriorityVariant = (priority: string) => {
+    switch (priority) {
+        case 'High': return 'destructive';
+        case 'Medium': return 'secondary';
+        case 'Low': return 'outline';
+        default: return 'default';
+    }
+}
+
+const initialForm = { title: '', assignee: '', assigneeInitials: '', dueDate: '', status: 'To Do', progress: 0, priority: 'Medium' };
+
+const TaskCard = ({ task, onEdit, onDelete }: { task: any, onEdit: (task: any) => void, onDelete: (task: any) => void }) => (
+    <Card className="mb-4">
+        <CardContent className="p-4">
+            <div className="flex justify-between items-start mb-2">
+                <span className="font-semibold text-sm">{task.title}</span>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-6 w-6">
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => onEdit(task)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(task)}>Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+            <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                        <AvatarImage src={`https://placehold.co/32x32.png?text=${task.assigneeInitials || '??'}`} />
+                        <AvatarFallback>{task.assigneeInitials || '??'}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-xs text-muted-foreground">{task.assignee}</span>
+                </div>
+                <Badge variant={getPriorityVariant(task.priority)}>{task.priority}</Badge>
+            </div>
+            <div className="mt-4">
+                <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-muted-foreground">Due: {task.dueDate}</span>
+                    <span className="text-xs font-semibold">{task.progress}%</span>
+                </div>
+                <Progress value={task.progress} className="h-2" />
+            </div>
+        </CardContent>
+    </Card>
+);
+
+export default function TasksPage() {
+    const [tasks, setTasks] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [showModal, setShowModal] = useState(false);
+    const [form, setForm] = useState<any>(initialForm);
+    const [editingTask, setEditingTask] = useState<any>(null);
+    const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState<string | null>(null);
+
+    const fetchTasks = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch('/api/internal/tasks');
+            if (!res.ok) throw new Error('Failed to fetch tasks');
+            const data = await res.json();
+            setTasks(data);
+        } catch (e: any) {
+            setError(e.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchTasks(); }, []);
+
+    const openCreate = () => {
+        setForm(initialForm);
+        setEditingTask(null);
+        setShowModal(true);
+    };
+    const openEdit = (task: any) => {
+        setForm({
+            title: task.title ?? '',
+            assignee: task.assignee ?? '',
+            assigneeInitials: task.assigneeInitials ?? '',
+            dueDate: task.dueDate ?? '',
+            status: task.status ?? 'To Do',
+            progress: typeof task.progress === 'number' ? task.progress : 0,
+            priority: task.priority ?? 'Medium',
+        });
+        setEditingTask(task);
+        setShowModal(true);
+    };
+    const closeModal = () => {
+        setShowModal(false);
+        setForm(initialForm);
+        setEditingTask(null);
+    };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setForm((f: any) => ({ ...f, [e.target.name]: e.target.value }));
+    };
+    const handleSave = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSaving(true);
+        try {
+            if (editingTask) {
+                // Update
+                const res = await fetch(`/api/internal/tasks/${editingTask.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(form),
+                });
+                if (!res.ok) throw new Error('Failed to update task');
+            } else {
+                // Create
+                const res = await fetch('/api/internal/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(form),
+                });
+                if (!res.ok) throw new Error('Failed to create task');
+            }
+            await fetchTasks();
+            closeModal();
+        } catch (e: any) {
+            setError(e.message);
+        } finally {
+            setSaving(false);
+        }
+    };
+    const handleDelete = async (task: any) => {
+        if (!window.confirm(`Delete task "${task.title}"?`)) return;
+        setDeleting(task.id);
+        try {
+            const res = await fetch(`/api/internal/tasks/${task.id}`, { method: 'DELETE' });
+            if (!res.ok) throw new Error('Failed to delete task');
+            await fetchTasks();
+        } catch (e: any) {
+            setError(e.message);
+        } finally {
+            setDeleting(null);
+        }
+    };
+
+    return (
+        <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between mb-4">
+                <div>
+                    <h1 className="text-2xl font-bold">Task Management</h1>
+                    <p className="text-muted-foreground">Organize, assign, and track your team's work.</p>
+                </div>
+                <Button onClick={openCreate}>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Add Task
+                </Button>
+            </div>
+            {error && <div className="text-red-500 mb-2">{error}</div>}
+            {loading ? (
+                <div className="flex items-center justify-center py-8">Loading...</div>
+            ) : (
+                <div className="flex-1 overflow-x-auto">
+                    <div className="grid grid-cols-[repeat(4,minmax(300px,1fr))] gap-4 pb-4">
+                        {taskStatuses.map(status => {
+                            const statusTasks = tasks.filter(task => task.status === status);
+                            return (
+                                <div key={status} className="bg-muted/50 rounded-lg p-4">
+                                    <h2 className="font-semibold mb-4 flex justify-between items-center">
+                                        {status}
+                                        <span className="text-sm font-normal bg-background rounded-full px-2 py-0.5">{statusTasks.length}</span>
+                                    </h2>
+                                    <div className="flex-1">
+                                        {statusTasks.length > 0 ? (
+                                            statusTasks.map(task => <TaskCard key={task.id} task={task} onEdit={openEdit} onDelete={handleDelete} />)
+                                        ) : (
+                                            <p className="text-xs text-muted-foreground text-center pt-8">No tasks in this stage.</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            )}
+            {/* Modal for create/edit */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+                    <form onSubmit={handleSave} className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <h2 className="font-semibold mb-4">{editingTask ? 'Edit Task' : 'Add Task'}</h2>
+                        <div className="grid gap-3">
+                            <input name="title" value={form.title ?? ''} onChange={handleChange} placeholder="Title" className="border rounded px-2 py-1" required />
+                            <input name="assignee" value={form.assignee ?? ''} onChange={handleChange} placeholder="Assignee" className="border rounded px-2 py-1" required />
+                            <input name="assigneeInitials" value={form.assigneeInitials ?? ''} onChange={handleChange} placeholder="Assignee Initials" className="border rounded px-2 py-1" />
+                            <input name="dueDate" value={form.dueDate ?? ''} onChange={handleChange} type="date" className="border rounded px-2 py-1" required />
+                            <select name="status" value={form.status ?? 'To Do'} onChange={handleChange} className="border rounded px-2 py-1">
+                                {taskStatuses.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                            <input name="progress" value={form.progress ?? 0} onChange={handleChange} type="number" min={0} max={100} className="border rounded px-2 py-1" />
+                            <select name="priority" value={form.priority ?? 'Medium'} onChange={handleChange} className="border rounded px-2 py-1">
+                                {priorities.map(p => <option key={p} value={p}>{p}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex justify-end gap-2 mt-4">
+                            <Button type="button" variant="outline" onClick={closeModal}>Cancel</Button>
+                            <Button type="submit" disabled={saving}>{saving ? 'Saving...' : 'Save'}</Button>
+                        </div>
+                    </form>
+                </div>
+            )}
+        </div>
+    );
+}

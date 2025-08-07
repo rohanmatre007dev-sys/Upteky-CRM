@@ -1,7 +1,11 @@
 
 'use client'
 
+<<<<<<< HEAD
 import { useEffect, useState, useCallback } from 'react';
+=======
+import { useEffect, useState } from 'react';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import Link from 'next/link';
 import { PlusCircle, MoreHorizontal, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -50,7 +54,11 @@ interface Client {
   status: string;
   createdAt: {
     toDate: () => Date;
+<<<<<<< HEAD
   } | Date;
+=======
+  };
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 }
 
 export default function ClientsDashboardPage() {
@@ -60,6 +68,7 @@ export default function ClientsDashboardPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+<<<<<<< HEAD
   // New state for modals/actions
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [modalType, setModalType] = useState<'details'|'contacts'|'ticket'|null>(null);
@@ -68,6 +77,8 @@ export default function ClientsDashboardPage() {
   const [ticketForm, setTicketForm] = useState({ subject: '', description: '' });
   const [ticketSubmitting, setTicketSubmitting] = useState(false);
 
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
   // State for the new client form
   const [companyName, setCompanyName] = useState('');
   const [status, setStatus] = useState('Active');
@@ -153,6 +164,7 @@ export default function ClientsDashboardPage() {
     }
   };
 
+<<<<<<< HEAD
   // Handlers for actions
   const handleViewDetails = useCallback(async (client: Client) => {
     setSelectedClient(client);
@@ -214,6 +226,8 @@ export default function ClientsDashboardPage() {
       setTicketSubmitting(false);
     }
   };
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
   const getStatusVariant = (status: string) => {
     switch (status?.toLowerCase()) {
@@ -357,6 +371,7 @@ export default function ClientsDashboardPage() {
                     <Badge variant={getStatusVariant(client.status)}>{client.status}</Badge>
                   </TableCell>
                   <TableCell>
+<<<<<<< HEAD
                     {(() => {
                       if (client.createdAt && typeof client.createdAt === 'object' && 'toDate' in client.createdAt) {
                         return client.createdAt.toDate().toLocaleDateString();
@@ -366,6 +381,9 @@ export default function ClientsDashboardPage() {
                       }
                       return '';
                     })()}
+=======
+                    {new Date(client.createdAt.toDate()).toLocaleDateString()}
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                   </TableCell>
                   <TableCell className="text-right">
                      <DropdownMenu>
@@ -375,9 +393,15 @@ export default function ClientsDashboardPage() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
+<<<<<<< HEAD
                             <DropdownMenuItem onClick={() => handleViewDetails(client)}>View Details</DropdownMenuItem>
                             <DropdownMenuItem onClick={() => handleManageContacts(client)}>Manage Contacts</DropdownMenuItem>
                             <DropdownMenuItem onClick={() => handleCreateTicket(client)}>Create Ticket</DropdownMenuItem>
+=======
+                            <DropdownMenuItem>View Details</DropdownMenuItem>
+                            <DropdownMenuItem>Manage Contacts</DropdownMenuItem>
+                            <DropdownMenuItem>Create Ticket</DropdownMenuItem>
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                         </DropdownMenuContent>
                      </DropdownMenu>
                   </TableCell>
@@ -387,6 +411,7 @@ export default function ClientsDashboardPage() {
           </TableBody>
         </Table>
       </CardContent>
+<<<<<<< HEAD
       {/* Modals for actions */}
       {/* View Details Modal */}
       {modalType === 'details' && selectedClient && (
@@ -452,6 +477,8 @@ export default function ClientsDashboardPage() {
           </DialogContent>
         </Dialog>
       )}
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     </Card>
   );
 }

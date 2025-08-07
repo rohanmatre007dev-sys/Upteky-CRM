@@ -1,6 +1,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
+=======
+import { writeBatch, doc, collection } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { initialProjects, projectAssignments } from '@/app/dashboard/_data/seed-data';
 import { getSessionAndUserRole } from '@/lib/auth';
 
@@ -19,17 +24,29 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+<<<<<<< HEAD
         const batch = db.batch();
 
         // Seed Projects
         initialProjects.forEach(project => {
             const projectRef = db.collection("projects").doc(project.id);
+=======
+        const batch = writeBatch(db);
+
+        // Seed Projects
+        initialProjects.forEach(project => {
+            const projectRef = doc(db, "projects", project.id);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             batch.set(projectRef, project);
         });
 
         // Seed Project Assignments
         projectAssignments.forEach(assignment => {
+<<<<<<< HEAD
             const assignmentRef = db.collection("projectAssignments").doc();
+=======
+            const assignmentRef = doc(collection(db, "projectAssignments"));
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             batch.set(assignmentRef, assignment);
         });
 

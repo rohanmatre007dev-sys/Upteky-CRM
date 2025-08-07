@@ -1,7 +1,13 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
 import { allPermissions as allPermissionsList } from '@/app/dashboard/_data/seed-data'
+=======
+import { doc, writeBatch } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { allPermissions as allPermissionsList } from '@/app/dashboard/user-management/_data/seed-data'
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
 type PermissionName = keyof typeof allPermissionsList;
 
@@ -25,7 +31,11 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ message: 'Permissions data is missing.' }, { status: 400 });
         }
 
+<<<<<<< HEAD
         const batch = db.batch();
+=======
+        const batch = writeBatch(db);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
         // Iterate through each role in the received matrix
         for (const role in permissionsMatrix) {
@@ -47,7 +57,11 @@ export async function PUT(req: NextRequest) {
                 }
                 
                 // Set the document in the 'role_permissions' collection
+<<<<<<< HEAD
                 const roleRef = db.collection('role_permissions').doc(role);
+=======
+                const roleRef = doc(db, 'role_permissions', role);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                 batch.set(roleRef, { permissions: permissionsToStore });
             }
         }
@@ -61,6 +75,7 @@ export async function PUT(req: NextRequest) {
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }
+<<<<<<< HEAD
 
 // GET /api/internal/permissions/roles - Fetch all role permissions
 export async function GET(req: NextRequest) {
@@ -87,3 +102,5 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3

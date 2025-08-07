@@ -1,5 +1,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { Timestamp } from 'firebase-admin/firestore';
 import { db } from '@/lib/firebase-admin';
 import { getSessionAndUserRole } from '@/lib/auth';
@@ -7,6 +8,13 @@ import { getSessionAndUserRole } from '@/lib/auth';
 
 
 
+=======
+import { collection, addDoc, getDocs, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { getSessionAndUserRole } from '@/lib/auth';
+
+
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 async function checkPermission(req: NextRequest, requiredPermissions: string[]): Promise<boolean> {
     const userRole = await getSessionAndUserRole(req); 
 
@@ -50,7 +58,11 @@ export async function POST(req: NextRequest) {
             createdAt: Timestamp.now(),
         };
 
+<<<<<<< HEAD
         const docRef = await db.collection('teams').add(newTeam);
+=======
+        const docRef = await addDoc(collection(db, 'teams'), newTeam);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         return NextResponse.json({ id: docRef.id, ...newTeam }, { status: 201 });
     } catch (error) {
         console.error("Error creating team:", error);
@@ -65,7 +77,11 @@ export async function GET(req: NextRequest) {
     }
 
     try {
+<<<<<<< HEAD
         const teamsSnapshot = await db.collection('teams').get();
+=======
+        const teamsSnapshot = await getDocs(collection(db, 'teams'));
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         const teamsList = teamsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(teamsList);
     } catch (error) {

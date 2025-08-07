@@ -1,6 +1,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
+=======
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { getSessionAndUserRole } from '@/lib/auth';
 
 async function checkPermission(req: NextRequest, requiredPermissions: string[]): Promise<boolean> {
@@ -13,9 +18,13 @@ async function checkPermission(req: NextRequest, requiredPermissions: string[]):
 }
 
 // POST /api/admin/teams/{teamId}/members - Add a user to a team
+<<<<<<< HEAD
 export async function POST(req: NextRequest, { params }: { params: Promise<{ teamId: string }> }) {
     const { teamId } = await params;
     
+=======
+export async function POST(req: NextRequest, { params }: { params: { teamId: string } }) {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     if (!await checkPermission(req, ['teams:manage:members'])) {
         return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
@@ -29,13 +38,21 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tea
         }
 
         const newMember = {
+<<<<<<< HEAD
             teamId,
+=======
+            teamId: params.teamId,
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             userId,
             teamRole,
             reportsToMemberId: reportsToMemberId || null,
         };
 
+<<<<<<< HEAD
         const docRef = await db.collection('teamMembers').add(newMember);
+=======
+        const docRef = await addDoc(collection(db, 'teamMembers'), newMember);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         return NextResponse.json({ id: docRef.id, ...newMember }, { status: 201 });
     } catch (error) {
         console.error("Error adding team member:", error);
@@ -44,17 +61,26 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tea
 }
 
 // GET /api/admin/teams/{teamId}/members - List all members of a team
+<<<<<<< HEAD
 export async function GET(req: NextRequest, { params }: { params: Promise<{ teamId: string }> }) {
     const { teamId } = await params;
     
+=======
+export async function GET(req: NextRequest, { params }: { params: { teamId: string } }) {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     if (!await checkPermission(req, ['teams:view:members'])) {
         return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
     
     try {
+<<<<<<< HEAD
         const membersSnapshot = await db.collection('teamMembers')
             .where('teamId', '==', teamId)
             .get();
+=======
+        const q = query(collection(db, 'teamMembers'), where('teamId', '==', params.teamId));
+        const membersSnapshot = await getDocs(q);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         const membersList = membersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(membersList);
     } catch (error) {

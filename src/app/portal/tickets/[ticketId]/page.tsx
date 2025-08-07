@@ -1,7 +1,11 @@
 
 'use client';
 
+<<<<<<< HEAD
 import { useEffect, useState, use } from 'react';
+=======
+import { useEffect, useState } from 'react';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import Link from 'next/link';
 import {
   Card,
@@ -35,8 +39,12 @@ interface Ticket {
     replies: Reply[];
 }
 
+<<<<<<< HEAD
 export default function ClientTicketViewPage({ params }: { params: Promise<{ ticketId: string }> }) {
   const { ticketId } = use(params);
+=======
+export default function ClientTicketViewPage({ params }: { params: { ticketId: string } }) {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
   const { toast } = useToast();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,7 +53,11 @@ export default function ClientTicketViewPage({ params }: { params: Promise<{ tic
   // This should be in a single function, but for clarity:
   const fetchTicket = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch(`/api/internal/crm/tickets/${ticketId}`); // Using internal API to get all replies including notes for context
+=======
+        const response = await fetch(`/api/internal/crm/tickets/${params.ticketId}`); // Using internal API to get all replies including notes for context
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         if (!response.ok) throw new Error('Failed to fetch ticket');
         const data = await response.json();
         // Sort replies and filter out internal notes for the client
@@ -61,12 +73,20 @@ export default function ClientTicketViewPage({ params }: { params: Promise<{ tic
 
   useEffect(() => {
     fetchTicket();
+<<<<<<< HEAD
   }, [ticketId, toast]);
+=======
+  }, [params.ticketId, toast]);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
   const handlePostReply = async () => {
     if (!newReply.trim()) return;
     try {
+<<<<<<< HEAD
       const response = await fetch(`/api/portal/tickets/${ticketId}/replies`, {
+=======
+      const response = await fetch(`/api/portal/tickets/${params.ticketId}/replies`, {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: newReply }),

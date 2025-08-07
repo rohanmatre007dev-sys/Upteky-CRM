@@ -4,7 +4,11 @@
 import { useEffect, useState } from 'react';
 import { PlusCircle, Upload } from "lucide-react"
 import Link from "next/link"
+<<<<<<< HEAD
 import { collection, getDocs } from "firebase/firestore";
+=======
+import { collection, getDocs, writeBatch, doc } from "firebase/firestore";
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,6 +34,23 @@ import { useToast } from '@/hooks/use-toast';
 // This is the initial data that will be used to seed the database.
 import {
     initialUsers,
+<<<<<<< HEAD
+=======
+    initialTeams,
+    initialTeamMembers,
+    initialRolePermissions,
+    allPermissions,
+    initialProjects,
+    initialTools,
+    initialClients,
+    initialContacts,
+    initialTickets,
+    initialTicketReplies,
+    initialTasks,
+    projectAssignments,
+    teamToolAccess,
+    initialOfficeLocations,
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 } from '../_data/seed-data';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -74,6 +95,7 @@ export default function UserManagementPage() {
   const handleSeedDatabase = async () => {
     setIsSeeding(true);
     try {
+<<<<<<< HEAD
         // Call the seed API routes
         const seedPromises = [
             fetch('/api/admin/seed/teams', { method: 'POST' }),
@@ -83,6 +105,101 @@ export default function UserManagementPage() {
 
         await Promise.all(seedPromises);
         
+=======
+        const batch = writeBatch(db);
+
+        // Seed Users
+        initialUsers.forEach(user => {
+            const userRef = doc(db, "users", user.id);
+            batch.set(userRef, user);
+        });
+
+        // Seed Teams
+        initialTeams.forEach(team => {
+            const teamRef = doc(db, "teams", team.id);
+            batch.set(teamRef, team);
+        })
+        
+        // Seed Team Members
+        initialTeamMembers.forEach(member => {
+            const memberRef = doc(collection(db, "teamMembers"));
+            batch.set(memberRef, member);
+        })
+
+        // Seed Projects
+        initialProjects.forEach(project => {
+            const projectRef = doc(db, "projects", project.id);
+            batch.set(projectRef, project);
+        })
+
+        // Seed Project Assignments
+        projectAssignments.forEach(assignment => {
+            const assignmentRef = doc(collection(db, "projectAssignments"));
+            batch.set(assignmentRef, assignment);
+        })
+
+        // Seed Tools
+        initialTools.forEach(tool => {
+            const toolRef = doc(db, "tools", tool.id);
+            batch.set(toolRef, tool);
+        })
+        
+        // Seed Team Tool Access
+        teamToolAccess.forEach(access => {
+            const accessRef = doc(collection(db, "teamToolAccess"));
+            batch.set(accessRef, access);
+        })
+        
+        // Seed Tasks
+        initialTasks.forEach(task => {
+            const taskRef = doc(db, "tasks", task.id);
+            batch.set(taskRef, task);
+        })
+
+        // Seed Permissions
+        Object.values(allPermissions).forEach(permission => {
+            const permissionRef = doc(db, "permissions", permission.name);
+            batch.set(permissionRef, permission);
+        })
+
+        // Seed Role Permissions
+        Object.entries(initialRolePermissions).forEach(([role, permissions]) => {
+            const roleRef = doc(db, "role_permissions", role);
+            batch.set(roleRef, { permissions });
+        });
+
+        // Seed Clients
+        initialClients.forEach(client => {
+            const clientRef = doc(db, "clients", client.id);
+            batch.set(clientRef, client);
+        });
+
+        // Seed Contacts
+        initialContacts.forEach(contact => {
+            const contactRef = doc(db, "contacts", contact.id);
+            batch.set(contactRef, contact);
+        });
+
+        // Seed Tickets
+        initialTickets.forEach(ticket => {
+            const ticketRef = doc(db, "tickets", ticket.id);
+            batch.set(ticketRef, ticket);
+        });
+
+        // Seed Ticket Replies
+        initialTicketReplies.forEach(reply => {
+            const replyRef = doc(db, "ticketReplies", reply.id);
+            batch.set(replyRef, reply);
+        });
+        
+        // Seed Office Locations
+        initialOfficeLocations.forEach(location => {
+            const locationRef = doc(db, "officeLocations", location.id);
+            batch.set(locationRef, location);
+        });
+
+        await batch.commit();
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         toast({
             title: "Database Seeded",
             description: "The initial data has been loaded into Firestore.",

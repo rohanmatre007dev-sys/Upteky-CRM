@@ -1,6 +1,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
+=======
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
 // A simple permission check middleware placeholder
 function hasPermission(req: NextRequest, permission: string) {
@@ -19,12 +24,20 @@ function getAuthor(req: NextRequest) {
 }
 
 // POST /api/internal/crm/tickets/{ticketId}/replies - Add a reply
+<<<<<<< HEAD
 export async function POST(req: NextRequest, { params }: { params: Promise<{ ticketId: string }> }) {
+=======
+export async function POST(req: NextRequest, { params }: { params: { ticketId: string } }) {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     if (!hasPermission(req, 'tickets:reply')) {
         return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
 
+<<<<<<< HEAD
     const { ticketId } = await params;
+=======
+    const { ticketId } = params;
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     const author = getAuthor(req);
 
     try {
@@ -41,10 +54,17 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tic
             authorName: author.name,
             message,
             isInternalNote: isInternalNote || false,
+<<<<<<< HEAD
             createdAt: new Date(),
         };
 
         const docRef = await db.collection('ticketReplies').add(newReply);
+=======
+            createdAt: Timestamp.now(),
+        };
+
+        const docRef = await addDoc(collection(db, 'ticketReplies'), newReply);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         return NextResponse.json({ id: docRef.id, ...newReply }, { status: 201 });
 
     } catch (error) {

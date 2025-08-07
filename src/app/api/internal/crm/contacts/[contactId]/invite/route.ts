@@ -9,11 +9,19 @@ function hasPermission(req: NextRequest, permission: string) {
 
 
 // POST /api/internal/crm/contacts/{contactId}/invite - Send portal invitation
+<<<<<<< HEAD
 export async function POST(req: NextRequest, { params }: { params: Promise<{ contactId: string }> }) {
     if (!hasPermission(req, 'contacts:invite')) {
         return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
     const { contactId } = await params;
+=======
+export async function POST(req: NextRequest, { params }: { params: { contactId: string } }) {
+    if (!hasPermission(req, 'contacts:invite')) {
+        return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+    }
+    const { contactId } = params;
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
     try {
         // This is where you would:

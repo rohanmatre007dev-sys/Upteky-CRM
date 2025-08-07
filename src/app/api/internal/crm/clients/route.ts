@@ -1,6 +1,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
+=======
+import { collection, addDoc, getDocs, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { getSessionAndUserRole } from '@/lib/auth';
 
 // Secure permission check function
@@ -40,7 +45,12 @@ export async function GET(req: NextRequest) {
     }
 
     try {
+<<<<<<< HEAD
         const clientSnapshot = await db.collection('clients').get();
+=======
+        const clientsCollection = collection(db, 'clients');
+        const clientSnapshot = await getDocs(clientsCollection);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         const clientsList = clientSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(clientsList);
     } catch (error) {
@@ -80,10 +90,17 @@ export async function POST(req: NextRequest) {
             status: status || 'Active', // Default status
             address: address || {},
             primaryContactId: primaryContactId || null,
+<<<<<<< HEAD
             createdAt: new Date(), // Add server-side timestamp
         };
 
         const docRef = await db.collection('clients').add(newClient);
+=======
+            createdAt: Timestamp.now(), // Add server-side timestamp
+        };
+
+        const docRef = await addDoc(collection(db, 'clients'), newClient);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
         return NextResponse.json({ id: docRef.id, ...newClient }, { status: 201 });
 

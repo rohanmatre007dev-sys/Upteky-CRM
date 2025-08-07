@@ -1,7 +1,11 @@
 
 'use client'
 
+<<<<<<< HEAD
 import { useEffect, useState, use } from "react";
+=======
+import { useEffect, useState } from "react";
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +19,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
 
 
+<<<<<<< HEAD
 export default function UserEditPage({ params }: { params: Promise<{ userId: string }> }) {
     const { userId } = use(params);
+=======
+export default function UserEditPage({ params }: { params: { userId: string } }) {
+    const { userId } = params;
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     const { toast } = useToast();
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);

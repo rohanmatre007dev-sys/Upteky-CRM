@@ -1,5 +1,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
 import { getSessionAndUserRole } from '@/lib/auth';
 
@@ -7,6 +8,16 @@ import { getSessionAndUserRole } from '@/lib/auth';
 // PUT /api/overtime/review/{recordId}
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ recordId: string }> }) {
     const { recordId } = await params;
+=======
+import { db } from '@/lib/firebase';
+import { getSessionAndUserRole } from '@/lib/auth';
+import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
+
+
+// PUT /api/overtime/review/{recordId}
+export async function PUT(req: NextRequest, { params }: { params: { recordId: string } }) {
+    const { recordId } = params;
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     const userRole = await getSessionAndUserRole(req);
     const approverUserId = req.headers.get('X-User-Id');
 
@@ -25,11 +36,19 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ reco
     }
     
     try {
+<<<<<<< HEAD
         const recordRef = db.collection('attendanceRecords').doc(recordId);
         const recordSnap = await recordRef.get();
 
         // 3. Verify Record State
         if (!recordSnap.exists) {
+=======
+        const recordRef = doc(db, 'attendanceRecords', recordId);
+        const recordSnap = await getDoc(recordRef);
+
+        // 3. Verify Record State
+        if (!recordSnap.exists()) {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             return NextResponse.json({ message: 'Record not found.' }, { status: 404 });
         }
         const recordData = recordSnap.data();
@@ -41,7 +60,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ reco
         const updateData: any = {
             overtimeApprovalStatus: status,
             overtimeApprovedByUserId: approverUserId,
+<<<<<<< HEAD
             overtimeApprovedAt: new Date(),
+=======
+            overtimeApprovedAt: Timestamp.now(),
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             adminComment: adminComment || null,
         };
         
@@ -52,7 +75,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ reco
         }
         
         // 5. Update Document
+<<<<<<< HEAD
         await recordRef.update(updateData);
+=======
+        await updateDoc(recordRef, updateData);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         
         const updatedRecord = { ...recordData, ...updateData };
 

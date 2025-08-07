@@ -1,10 +1,19 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
 
 // POST /api/portal/tickets/{ticketId}/replies - Add a reply from a client
 export async function POST(req: NextRequest, { params }: { params: Promise<{ ticketId: string }> }) {
     const { ticketId } = await params;
+=======
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+
+// POST /api/portal/tickets/{ticketId}/replies - Add a reply from a client
+export async function POST(req: NextRequest, { params }: { params: { ticketId: string } }) {
+    const { ticketId } = params;
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     
     // --- AUTHENTICATION & PERMISSION CHECK ---
     // In a real app, get client info from their auth session token
@@ -30,10 +39,17 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tic
             authorName: authenticatedClient.name,
             message,
             isInternalNote: false, // Clients can NEVER post internal notes.
+<<<<<<< HEAD
             createdAt: new Date(),
         };
 
         const docRef = await db.collection('ticketReplies').add(newReply);
+=======
+            createdAt: Timestamp.now(),
+        };
+
+        const docRef = await addDoc(collection(db, 'ticketReplies'), newReply);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         return NextResponse.json({ id: docRef.id, ...newReply }, { status: 201 });
 
     } catch (error) {

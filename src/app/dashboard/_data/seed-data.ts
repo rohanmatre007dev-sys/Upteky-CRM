@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 import { Timestamp } from 'firebase-admin/firestore';
+=======
+import { Timestamp } from 'firebase/firestore';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
 export const initialUsers = [
     { id: "user-admin", name: "Admin User", email: "admin@upteky.com", role: "Admin", status: "Active", firstName: "Admin", lastName: "User" },

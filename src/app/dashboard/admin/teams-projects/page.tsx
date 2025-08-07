@@ -2,19 +2,26 @@
 'use client'
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { PlusCircle, Loader2, Upload, X } from "lucide-react";
+=======
+import { PlusCircle, Loader2, Upload } from "lucide-react";
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ManageProjectModal from "./ManageProjectModal";
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
 interface Team {
   id: string;
@@ -49,6 +56,7 @@ export default function TeamsProjectsPage() {
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState({ teams: true, projects: true });
     const [isSeeding, setIsSeeding] = useState({ teams: false, projects: false });
+<<<<<<< HEAD
     
     // Modal states
     const [showTeamModal, setShowTeamModal] = useState(false);
@@ -69,6 +77,8 @@ export default function TeamsProjectsPage() {
         description: '',
         status: ''
     });
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
     const fetchData = async (type: 'teams' | 'projects') => {
         setLoading(prev => ({ ...prev, [type]: true }));
@@ -110,6 +120,7 @@ export default function TeamsProjectsPage() {
         }
     }
 
+<<<<<<< HEAD
     const handleCreateTeam = async () => {
         if (!teamForm.name || !teamForm.teamType) {
             toast({ variant: 'destructive', title: 'Validation Error', description: 'Name and team type are required.' });
@@ -176,6 +187,9 @@ export default function TeamsProjectsPage() {
 
     return (
         <>
+=======
+    return (
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         <Tabs defaultValue="teams">
             <div className="flex items-center justify-between mb-4">
                 <div>
@@ -200,7 +214,11 @@ export default function TeamsProjectsPage() {
                                     {isSeeding.teams ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                                     {isSeeding.teams ? 'Seeding...' : 'Seed Teams'}
                                 </Button>
+<<<<<<< HEAD
                                 <Button size="sm" onClick={() => setShowTeamModal(true)}>
+=======
+                                <Button size="sm" onClick={() => {/* TODO: Open Create Team Modal */}}>
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                                     <PlusCircle className="mr-2 h-4 w-4" /> Create New Team
                                 </Button>
                             </div>
@@ -247,7 +265,11 @@ export default function TeamsProjectsPage() {
                                      {isSeeding.projects ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                                     {isSeeding.projects ? 'Seeding...' : 'Seed Projects'}
                                 </Button>
+<<<<<<< HEAD
                                 <Button size="sm" onClick={() => setShowProjectModal(true)}>
+=======
+                                <Button size="sm" onClick={() => {/* TODO: Open Create Project Modal */}}>
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                                     <PlusCircle className="mr-2 h-4 w-4" /> Create New Project
                                 </Button>
                             </div>
@@ -270,7 +292,11 @@ export default function TeamsProjectsPage() {
                                         <TableCell>{project.description}</TableCell>
                                         <TableCell>{project.status}</TableCell>
                                         <TableCell className="text-right">
+<<<<<<< HEAD
                                             <Button variant="outline" size="sm" onClick={() => { setSelectedProject(project); setShowManageProject(true); }}>
+=======
+                                            <Button variant="outline" size="sm" onClick={() => {/* TODO: Navigate to Project Details */}}>
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                                                 Manage
                                             </Button>
                                         </TableCell>
@@ -282,6 +308,7 @@ export default function TeamsProjectsPage() {
                 </Card>
             </TabsContent>
         </Tabs>
+<<<<<<< HEAD
 
         {/* Create Team Modal */}
         <Dialog open={showTeamModal} onOpenChange={setShowTeamModal}>
@@ -416,5 +443,7 @@ export default function TeamsProjectsPage() {
             }}
         />
         </>
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     )
 }

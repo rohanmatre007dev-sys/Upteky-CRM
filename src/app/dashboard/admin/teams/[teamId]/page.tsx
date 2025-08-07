@@ -1,6 +1,10 @@
 
 'use client'
+<<<<<<< HEAD
 import { useState, useEffect, use } from "react";
+=======
+import { useState, useEffect } from "react";
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { useRouter } from "next/navigation";
 import { PlusCircle, Loader2, Trash2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -291,8 +295,13 @@ const AssignedProjectsTab = ({ teamId, allProjects, initialAssignments }: { team
 
 
 // --- Main Page Component ---
+<<<<<<< HEAD
 export default function TeamDetailPage({ params }: { params: Promise<{ teamId: string }> }) {
     const { teamId } = use(params);
+=======
+export default function TeamDetailPage({ params }: { params: { teamId: string } }) {
+    const { teamId } = params;
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     const { toast } = useToast();
     const [loading, setLoading] = useState(true);
     const [team, setTeam] = useState<Team | null>(null);

@@ -34,7 +34,11 @@ interface Ticket {
   assignedToUserId: string | null;
   createdAt: {
     toDate: () => Date;
+<<<<<<< HEAD
   } | Date;
+=======
+  };
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 }
 
 // Mock user data for assignees - in a real app this would come from your user management system
@@ -200,10 +204,14 @@ export default function TicketQueuePage() {
                   </TableCell>
                   <TableCell>{getAssigneeName(ticket.assignedToUserId)}</TableCell>
                   <TableCell>
+<<<<<<< HEAD
                     {ticket.createdAt?.toDate ? 
                       new Date(ticket.createdAt.toDate()).toLocaleString() :
                       new Date(ticket.createdAt).toLocaleString()
                     }
+=======
+                    {new Date(ticket.createdAt.toDate()).toLocaleString()}
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
                   </TableCell>
                 </TableRow>
               ))

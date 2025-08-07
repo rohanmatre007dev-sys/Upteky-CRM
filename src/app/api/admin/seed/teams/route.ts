@@ -1,6 +1,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { db } from '@/lib/firebase-admin';
+=======
+import { writeBatch, doc, collection } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { initialTeams, initialTeamMembers, teamToolAccess } from '@/app/dashboard/_data/seed-data';
 import { getSessionAndUserRole } from '@/lib/auth';
 
@@ -19,23 +24,39 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+<<<<<<< HEAD
         const batch = db.batch();
 
         // Seed Teams
         initialTeams.forEach(team => {
             const teamRef = db.collection("teams").doc(team.id);
+=======
+        const batch = writeBatch(db);
+
+        // Seed Teams
+        initialTeams.forEach(team => {
+            const teamRef = doc(db, "teams", team.id);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             batch.set(teamRef, team);
         });
 
         // Seed Team Members
         initialTeamMembers.forEach(member => {
+<<<<<<< HEAD
             const memberRef = db.collection("teamMembers").doc();
+=======
+            const memberRef = doc(collection(db, "teamMembers"));
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             batch.set(memberRef, member);
         });
         
         // Seed Team Tool Access
         teamToolAccess.forEach(access => {
+<<<<<<< HEAD
             const accessRef = db.collection("teamToolAccess").doc();
+=======
+            const accessRef = doc(collection(db, "teamToolAccess"));
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             batch.set(accessRef, access);
         });
 

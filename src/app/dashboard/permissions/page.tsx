@@ -33,6 +33,7 @@ const allPermissions = {
 type PermissionName = keyof typeof allPermissions;
 type PermissionsMatrix = Record<string, Partial<Record<PermissionName, boolean>>>;
 
+<<<<<<< HEAD
 export default function PermissionsPage() {
     const { toast } = useToast();
     const [permissions, setPermissions] = React.useState<PermissionsMatrix>({});
@@ -62,6 +63,23 @@ export default function PermissionsPage() {
         };
         fetchPermissions();
     }, [toast]);
+=======
+
+// Mock initial permissions. In a real app, this would come from a database.
+const initialPermissions: PermissionsMatrix = {
+  Admin: { 'dashboard:view': true, 'attendance:view:all': true, 'payroll:view:all': true, 'clients:view': true, 'tickets:view': true, 'lead-generation:view': true, 'tasks:view': true, 'timesheet:view': true, 'users:manage': true, 'permissions:manage': true, 'audit-log:view': true },
+  'Sub-Admin': { 'dashboard:view': true, 'attendance:view:all': true, 'payroll:view:all': true, 'clients:view': true, 'tickets:view': true, 'lead-generation:view': true, 'tasks:view': true, 'timesheet:view': true, 'users:manage': true, 'permissions:manage': true },
+  HR: { 'dashboard:view': true, 'attendance:view:all': true, 'payroll:view:all': true, 'tasks:view': true, 'timesheet:view': true, 'users:manage': true, 'audit-log:view': true, 'clients:view': true, 'tickets:view': true },
+  'Team Lead': { 'dashboard:view': true, 'attendance:view:team': true, 'payroll:view:own': true, 'clients:view': true, 'tickets:view': true, 'lead-generation:view': true, 'tasks:view': true, 'timesheet:view': true },
+  Employee: { 'dashboard:view': true, 'attendance:view:own': true, 'payroll:view:own': true, 'tasks:view': true, 'timesheet:view': true },
+  'Business Development': { 'dashboard:view': true, 'clients:view': true, 'lead-generation:view': true },
+};
+
+export default function PermissionsPage() {
+    const { toast } = useToast();
+    const [permissions, setPermissions] = React.useState(initialPermissions);
+    const [isSaving, setIsSaving] = React.useState(false);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
     const handlePermissionChange = (role: string, permission: PermissionName, checked: boolean) => {
         setPermissions(prev => ({
@@ -105,6 +123,7 @@ export default function PermissionsPage() {
         }
     };
 
+<<<<<<< HEAD
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-8">
@@ -114,6 +133,8 @@ export default function PermissionsPage() {
         );
     }
 
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
     return (
         <Card>
             <CardHeader>

@@ -1,11 +1,18 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { Timestamp } from 'firebase-admin/firestore';
 import { db } from '@/lib/firebase-admin';
 import { getSessionAndUserRole } from '@/lib/auth';
 
 
 
+=======
+import { collection, addDoc, getDocs, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { getSessionAndUserRole } from '@/lib/auth';
+
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 async function checkPermission(req: NextRequest, requiredPermissions: string[]): Promise<boolean> {
     const userRole = await getSessionAndUserRole(req); 
 
@@ -50,7 +57,11 @@ export async function POST(req: NextRequest) {
             createdAt: Timestamp.now(),
         };
 
+<<<<<<< HEAD
         const docRef = await db.collection('projects').add(newProject);
+=======
+        const docRef = await addDoc(collection(db, 'projects'), newProject);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         return NextResponse.json({ id: docRef.id, ...newProject }, { status: 201 });
     } catch (error) {
         console.error("Error creating project:", error);
@@ -65,7 +76,11 @@ export async function GET(req: NextRequest) {
     }
 
     try {
+<<<<<<< HEAD
         const projectsSnapshot = await db.collection('projects').get();
+=======
+        const projectsSnapshot = await getDocs(collection(db, 'projects'));
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
         const projectsList = projectsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         return NextResponse.json(projectsList);
     } catch (error) {

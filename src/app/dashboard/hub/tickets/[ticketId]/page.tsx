@@ -1,7 +1,11 @@
 
 'use client'
 
+<<<<<<< HEAD
 import { useEffect, useState, use } from 'react';
+=======
+import { useEffect, useState } from 'react';
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import {
   Card,
   CardContent,
@@ -17,7 +21,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+<<<<<<< HEAD
 import { Input } from '@/components/ui/input';
+=======
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Send, UserCircle, MessageSquare, PenSquare, CornerDownRight, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -51,8 +58,12 @@ const assignableUsers = [
     { id: 'user-admin', name: 'Admin User' },
 ];
 
+<<<<<<< HEAD
 export default function TicketDetailPage({ params }: { params: Promise<{ ticketId: string }> }) {
   const { ticketId } = use(params);
+=======
+export default function TicketDetailPage({ params }: { params: { ticketId: string } }) {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
   const { toast } = useToast();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,7 +73,11 @@ export default function TicketDetailPage({ params }: { params: Promise<{ ticketI
   const fetchTicket = async () => {
       setLoading(true);
       try {
+<<<<<<< HEAD
         const response = await fetch(`/api/internal/crm/tickets/${ticketId}`, {
+=======
+        const response = await fetch(`/api/internal/crm/tickets/${params.ticketId}`, {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
             headers: { 'X-User-Role': 'Admin' }
         });
         if (!response.ok) {
@@ -85,16 +100,27 @@ export default function TicketDetailPage({ params }: { params: Promise<{ ticketI
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     if(ticketId) {
         fetchTicket();
     }
   }, [ticketId, toast]);
+=======
+    if(params.ticketId) {
+        fetchTicket();
+    }
+  }, [params.ticketId, toast]);
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
 
   const handlePostReply = async () => {
       if (!newReply.trim()) return;
       
       try {
+<<<<<<< HEAD
           const response = await fetch(`/api/internal/crm/tickets/${ticketId}/replies`, {
+=======
+          const response = await fetch(`/api/internal/crm/tickets/${params.ticketId}/replies`, {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
               method: 'POST',
               headers: { 
                   'Content-Type': 'application/json',
@@ -117,7 +143,11 @@ export default function TicketDetailPage({ params }: { params: Promise<{ ticketI
 
   const handleAssignmentChange = async (userId: string) => {
       try {
+<<<<<<< HEAD
            const response = await fetch(`/api/internal/crm/tickets/${ticketId}/assign`, {
+=======
+           const response = await fetch(`/api/internal/crm/tickets/${params.ticketId}/assign`, {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
               method: 'PUT',
               headers: { 
                   'Content-Type': 'application/json',
@@ -136,7 +166,11 @@ export default function TicketDetailPage({ params }: { params: Promise<{ ticketI
   
   const handleConvertToTask = async () => {
       try {
+<<<<<<< HEAD
           const response = await fetch(`/api/internal/crm/tickets/${ticketId}/convert-to-task`, {
+=======
+          const response = await fetch(`/api/internal/crm/tickets/${params.ticketId}/convert-to-task`, {
+>>>>>>> 9f28865dde4974f7bb9dc46bc61a2663467f1ce3
               method: 'POST',
               headers: { 'X-User-Role': 'Admin' }
           });
